@@ -5,6 +5,17 @@
       北京理工大学国防科技园2号楼10层
       <span class="iconfont position__notice">&#xe6bb;</span>
     </div>
+    <div class="search">
+      <span class="iconfont">&#xe613;</span>
+      <span class="search__text">山姆会员商店优惠商品</span>
+    </div>
+    <div class="banner">
+      <img
+        class="banner__img"
+        src="http://www.dell-lee.com/imgs/vue3/banner.jpg"
+        alt=""
+      />
+    </div>
   </div>
   <div class="docker">
     <div class="docker__item docker__item--active">
@@ -27,8 +38,8 @@
 </template>
 
 <style lang="scss">
-@import './style/viriables.scss';
-@import './style/mixins.scss';
+@import "./style/viriables.scss";
+@import "./style/mixins.scss";
 .wrapper {
   position: absolute;
   left: 0;
@@ -39,23 +50,49 @@
 }
 .position {
   position: relative;
-  padding: .16rem 0;
-  line-height: .22rem;
-  font-size: .16rem;
+  padding: 0.16rem 0;
+  line-height: 0.22rem;
+  font-size: 0.16rem;
   color: $conent-fontcolor;
+  margin-bottom: 16px;
   @include ellipse;
   .position__icon {
     position: relative;
-    top: .01rem;
-    font-size: .2rem;
+    top: 0.01rem;
+    font-size: 0.2rem;
   }
   .position__notice {
     position: absolute;
     right: 0;
-    top: .17rem;
-    font-size: .2rem;
+    top: 0.17rem;
+    font-size: 0.2rem;
   }
 }
+.search {
+  background: #f5f5f5;
+  line-height: 0.32rem;
+  border-radius: 0.16rem;
+  color: #b7b7b7;
+  margin-bottom: 0.12rem;
+  .iconfont {
+    display: inline-block;
+    margin: 0 0.12rem 0 0.16rem;
+    font-size: 0.16rem;
+  }
+  &__text {
+    display: inline-block;
+    font-size: 0.14rem;
+  }
+}
+.banner {
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 25.4%;
+  &__img {
+    width: 100%;
+  }
+}
+
 .docker {
   display: flex;
   position: absolute;
