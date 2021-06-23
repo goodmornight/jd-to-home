@@ -2,23 +2,25 @@
   <div class="toast">{{ message }}</div>
 </template>
 <script>
-import { reactive } from 'vue'
+import { reactive, toRefs } from 'vue'
 
 export const useToastEffect = () => {
   const toastData = reactive({
-    showToast: false,
+    show: false,
     toastMessage: ''
   })
   const showToast = (message) => {
-    toastData.showToast = true
+    toastData.show = true
     toastData.toastMessage = message
     setTimeout(() => {
-      toastData.showToast = false
+      toastData.show = false
       toastData.toastMessage = ''
     }, 2000)
   }
+  const { show, toastMessage } = toRefs(toastData)
   return {
-    toastData,
+    show,
+    toastMessage,
     showToast
   }
 }
