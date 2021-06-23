@@ -5,10 +5,20 @@
       src="http://www.dell-lee.com/imgs/vue3/user.png"
     />
     <div class="wrapper__input">
-      <input class="wrapper__input__content" type="text" placeholder="请输入手机号" />
+      <input
+        class="wrapper__input__content"
+        type="text"
+        placeholder="用户名"
+        v-model="data.username"
+      />
     </div>
     <div class="wrapper__input">
-      <input class="wrapper__input__content" type="password" placeholder="请输入密码"/>
+      <input
+        class="wrapper__input__content"
+        type="password"
+        placeholder="请输入密码"
+        v-model="data.password"
+      />
     </div>
     <div class="wrapper__login-button" @click="handleLogin">登录</div>
     <div class="wrapper__login-link">立即注册</div>
@@ -16,17 +26,36 @@
 </template>
 
 <script>
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { post } from '../../utils/request'
 
 export default {
   name: 'Login',
   setup () {
+    const data = reactive({
+      username: '',
+      password: ''
+    })
     const router = useRouter()
-    const handleLogin = () => {
-      localStorage.isLogin = true
-      router.push({ name: 'Home' })
+    const handleLogin = async () => {
+      try {
+        const result = await post('/api/user/login', {
+          username: data.username,
+          password: data.password
+        })
+        if (result?.errno === 0) {
+          localStorage.isLogin = true
+          router.push({ name: 'Home' })
+        } else {
+          alert('登录失败')
+        }
+      } catch (e) {
+        alert('请求失败')
+      }
     }
     return {
+      data,
       handleLogin
     }
   }
@@ -71,18 +100,18 @@ export default {
   }
   &__login-button {
     height: 0.48rem;
-    line-height: .48rem;
-    font-size: .16rem;
+    line-height: 0.48rem;
+    font-size: 0.16rem;
     color: #fff;
     text-align: center;
     background: #0091ff;
     box-shadow: 0 4px 8px 0 rgba(0, 145, 255, 0.32);
     border-radius: 4px;
-    margin: .32rem 0.4rem 0.16rem 0.4rem;
+    margin: 0.32rem 0.4rem 0.16rem 0.4rem;
   }
   &__login-link {
     color: $content-notice-fontcolor;
-    font-size: .14rem;
+    font-size: 0.14rem;
     text-align: center;
   }
 }
