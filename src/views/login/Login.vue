@@ -17,6 +17,7 @@
         class="wrapper__input__content"
         type="password"
         placeholder="请输入密码"
+        autocomplete="new-password"
         v-model="password"
       />
     </div>

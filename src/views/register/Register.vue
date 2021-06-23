@@ -5,30 +5,82 @@
       src="http://www.dell-lee.com/imgs/vue3/user.png"
     />
     <div class="wrapper__input">
-      <input class="wrapper__input__content" type="text" placeholder="请输入手机号" />
+      <input class="wrapper__input__content" type="text" placeholder="请输入用户名" v-model="username"/>
     </div>
     <div class="wrapper__input">
-      <input class="wrapper__input__content" type="password" placeholder="请输入密码" />
+      <input class="wrapper__input__content" type="password" placeholder="请输入密码" v-model="password" autocomplete="new-password"/>
     </div>
     <div class="wrapper__input">
-      <input class="wrapper__input__content" type="password" placeholder="确认密码" />
+      <input class="wrapper__input__content" type="password" placeholder="确认密码" v-model="ensurement" autocomplete="new-password"/>
     </div>
-    <div class="wrapper__register-button">注册</div>
+    <div class="wrapper__register-button" @click="handleRegister">注册</div>
     <div class="wrapper__register-link" @click="handleLoginClick">已有账号去登陆</div>
+    <Toast v-if="show" :message="toastMessage"/>
   </div>
 </template>
 
 <script>
+import { reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
+import { post } from '../../utils/request'
+import Toast, { useToastEffect } from '../../components/Toast'
+
+const useRegisterEffect = (showToast) => {
+  const router = useRouter()
+  const data = reactive({
+    username: '',
+    password: '',
+    ensurement: ''
+  })
+  const handleRegister = async () => {
+    try {
+      const result = await post('/api/user/register', {
+        username: data.username,
+        password: data.password
+      })
+      if (result?.errno === 0) {
+        localStorage.isLogin = true
+        router.push({ name: 'Login' })
+      } else {
+        showToast('注册失败')
+      }
+    } catch (e) {
+      showToast('请求失败')
+    }
+  }
+  const { username, password, ensurement } = toRefs(data)
+  return {
+    username,
+    password,
+    ensurement,
+    handleRegister
+  }
+}
+
+const useLoginEffect = () => {
+  const router = useRouter()
+  const handleLoginClick = () => {
+    router.push({ name: 'Login' })
+  }
+  return {
+    handleLoginClick
+  }
+}
 
 export default {
   name: 'Register',
+  components: { Toast },
   setup () {
-    const router = useRouter()
-    const handleLoginClick = () => {
-      router.push({ name: 'Login' })
-    }
+    const { show, toastMessage, showToast } = useToastEffect()
+    const { username, password, ensurement, handleRegister } = useRegisterEffect(showToast)
+    const { handleLoginClick } = useLoginEffect()
     return {
+      username,
+      password,
+      ensurement,
+      show,
+      toastMessage,
+      handleRegister,
       handleLoginClick
     }
   }
