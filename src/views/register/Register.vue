@@ -8,10 +8,13 @@
       <input class="wrapper__input__content" type="text" placeholder="请输入手机号" />
     </div>
     <div class="wrapper__input">
-      <input class="wrapper__input__content" type="password" placeholder="请输入密码"/>
+      <input class="wrapper__input__content" type="password" placeholder="请输入密码" />
     </div>
-    <div class="wrapper__login-button" @click="handleLogin">登录</div>
-    <div class="wrapper__login-link">立即注册</div>
+    <div class="wrapper__input">
+      <input class="wrapper__input__content" type="password" placeholder="确认密码" />
+    </div>
+    <div class="wrapper__register-button">注册</div>
+    <div class="wrapper__register-link" @click="handleLoginClick">已有账号去登陆</div>
   </div>
 </template>
 
@@ -19,15 +22,14 @@
 import { useRouter } from 'vue-router'
 
 export default {
-  name: 'Login',
+  name: 'Register',
   setup () {
     const router = useRouter()
-    const handleLogin = () => {
-      localStorage.isLogin = true
-      router.push({ name: 'Home' })
+    const handleLoginClick = () => {
+      router.push({ name: 'Login' })
     }
     return {
-      handleLogin
+      handleLoginClick
     }
   }
 }
@@ -69,7 +71,7 @@ export default {
       }
     }
   }
-  &__login-button {
+  &__register-button {
     height: 0.48rem;
     line-height: .48rem;
     font-size: .16rem;
@@ -80,7 +82,7 @@ export default {
     border-radius: 4px;
     margin: .32rem 0.4rem 0.16rem 0.4rem;
   }
-  &__login-link {
+  &__register-link {
     color: $content-notice-fontcolor;
     font-size: .14rem;
     text-align: center;
