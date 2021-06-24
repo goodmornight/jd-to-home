@@ -7,42 +7,58 @@
         <input class="search__content__input" placeholder="请输入商品名称搜索"/>
       </div>
     </div>
-    <ShopInfo :item="item" :hideBorder="true"/>
+    <ShopInfo v-show="item.imgUrl" :item="item" :hideBorder="true"/>
   </div>
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import { reactive, toRefs } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { get } from '../../utils/request'
 import ShopInfo from '../../components/ShopInfo'
+
+const useShopInfoEffect = () => {
+  const route = useRoute()
+  const data = reactive({ item: {} })
+  const getItemData = async () => {
+    const result = await get(`/api/shop/${route.params.id}`)
+    if (result?.errno === 0 && result?.data) {
+      data.item = result.data
+    }
+  }
+  const { item } = toRefs(data)
+  return { item, getItemData }
+}
+
+const useBackRouterEffect = () => {
+  const router = useRouter()
+  const handleBackClick = () => {
+    router.back()
+  }
+  return handleBackClick
+}
+
 export default {
   name: 'Shop',
   components: { ShopInfo },
   setup () {
-    const router = useRouter()
-    const item = {
-      _id: '1',
-      name: '沃尔玛',
-      imgUrl: 'http://www.dell-lee.com/imgs/vue3/near.png',
-      sales: 10000,
-      expressLimit: 0,
-      expressPrice: 5,
-      slogan: 'VIP尊享满89元减4元运费券'
-    }
-    const handleBackClick = () => {
-      router.back()
-    }
+    const { item, getItemData } = useShopInfoEffect()
+    const handleBackClick = useBackRouterEffect()
+    getItemData()
     return { item, handleBackClick }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../../style/viriables.scss';
+
 .wrapper {
   padding: 0 .18rem;
 }
 .search {
   display: flex;
-  padding: .16rem 0 .04rem 0;
+  padding: .14rem 0 .04rem 0;
   line-height: .32rem;
   &__back {
     width: .3rem;
@@ -52,12 +68,12 @@ export default {
   &__content {
     display: flex;
     flex: 1;
-    background: #F5F5F5;
+    background: $search-bgColor;
     border-radius: .16rem;
     &__icon {
       width: .44rem;
       text-align: center;
-      color: #B7B7B7;
+      color: $search-fontColor;
     }
     &__input {
       display: inline-block;
