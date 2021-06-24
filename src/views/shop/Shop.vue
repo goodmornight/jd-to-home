@@ -8,6 +8,7 @@
       </div>
     </div>
     <ShopInfo v-show="item.imgUrl" :item="item" :hideBorder="true"/>
+    <Content />
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import { reactive, toRefs } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { get } from '../../utils/request'
 import ShopInfo from '../../components/ShopInfo'
+import Content from './Content'
 
 const useShopInfoEffect = () => {
   const route = useRoute()
@@ -40,7 +42,7 @@ const useBackRouterEffect = () => {
 
 export default {
   name: 'Shop',
-  components: { ShopInfo },
+  components: { ShopInfo, Content },
   setup () {
     const { item, getItemData } = useShopInfoEffect()
     const handleBackClick = useBackRouterEffect()
