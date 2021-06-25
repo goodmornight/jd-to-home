@@ -1,6 +1,17 @@
 <template>
+<div v-if="showChart" class="mask"></div>
   <div class="cart">
-    <div class="product">
+    <div v-if="showChart" class="product">
+      <div class="product__header">
+        <div class="product__header__all" @click="() => setCartItemsChecked(shopId)">
+          <span
+            class="product__header__icon iconfont"
+            v-html="allChecked ? '&#xe652;' : '&#xe66c;'"
+          ></span>
+          全选
+        </div>
+        <div class="product__header__clear" @click="() => cleanCartProducts(shopId)">清空购物车</div>
+      </div>
       <template
         v-for="item in productList"
         :key="item._id">
@@ -31,7 +42,9 @@
     </div>
     <div class="check">
       <div class="check__icon">
-        <img src="http://www.dell-lee.com/imgs/vue3/basket.png" class="check__icon__img" />
+        <img src="http://www.dell-lee.com/imgs/vue3/basket.png" class="check__icon__img"
+        @click="handleCartShowChange"
+        />
         <div class="check__icon__tag">{{total}}</div>
       </div>
       <div class="check__info">
@@ -44,7 +57,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { useCommonCartEffect } from './commonCartEffect'
@@ -88,19 +101,49 @@ const useCartEffect = () => {
     return productList
   })
 
+  const allChecked = computed(() => {
+    const productList = cartList[shopId]
+    let result = true
+    if (productList) {
+      for (const i in productList) {
+        const product = productList[i]
+        if (product.count > 0 && !product.check) {
+          result = false
+        }
+      }
+    }
+    return result
+  })
+
+  const setCartItemsChecked = (shopId) => {
+    store.commit('setCartItemsChecked', {
+      shopId
+    })
+  }
+
+  const cleanCartProducts = (shopId) => {
+    store.commit('cleanCartProducts', {
+      shopId
+    })
+  }
+
   const changeCartItemChecked = (shopId, productId) => {
     store.commit('changeCartItemChecked', {
       shopId, productId
     })
   }
 
-  return { shopId, total, price, productList, changeCartItemChecked, changeCartItemInfo }
+  return { shopId, total, price, productList, allChecked, setCartItemsChecked, cleanCartProducts, changeCartItemChecked, changeCartItemInfo }
 }
 export default {
   name: 'Cart',
   setup () {
-    const { shopId, total, price, productList, changeCartItemChecked, changeCartItemInfo } = useCartEffect()
-    return { shopId, total, price, productList, changeCartItemInfo, changeCartItemChecked }
+    const showChart = ref(false)
+    const { shopId, total, price, productList, allChecked, setCartItemsChecked, cleanCartProducts, changeCartItemChecked, changeCartItemInfo } = useCartEffect()
+    const handleCartShowChange = () => {
+      showChart.value = !showChart.value
+    }
+    return { showChart, shopId, total, price, productList, allChecked, setCartItemsChecked, cleanCartProducts, changeCartItemInfo, changeCartItemChecked, handleCartShowChange }
   }
 }
 </script>
@@ -108,12 +151,22 @@ export default {
 <style lang="scss" scoped>
 @import '../../style/viriables.scss';
 @import "../../style/mixins.scss";
-
+.mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(0,0,0,0.50);
+  z-index: 1;
+}
 .cart {
   position: absolute;
   bottom: 0;
   right: 0;
   left: 0;
+  background: #fff;
+  z-index: 2;
 }
 .check {
   display: flex;
@@ -167,6 +220,28 @@ export default {
   overflow-y: scroll;
   flex: 1;
   background: #fff;
+  &__header {
+    display: flex;
+    height: .52rem;
+    line-height: .52rem;
+    border-bottom: 1px #f1f1f1 solid;
+    &__icon {
+      color: #0091FF;
+      font-size: .2rem;
+    }
+    &__all {
+      width: .6rem;
+      font-size: .14rem;
+      margin-left: .18rem;
+    }
+    &__clear {
+      flex: 1;
+      text-align: right;
+      font-size: .14rem;
+      color: #333;
+      margin-right: .18rem;
+    }
+  }
   &__item {
     position: relative;
     display: flex;
@@ -174,8 +249,7 @@ export default {
     margin: 0 0.16rem;
     border-bottom: 0.01rem solid $content-bgColor;
     &__checked {
-      width: .2rem;
-      height: .2rem;
+      font-size: .2rem;
       line-height: .49rem;
       margin-right: .16rem;
       color: #0091FF;
