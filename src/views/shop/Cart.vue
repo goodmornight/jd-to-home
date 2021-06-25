@@ -1,16 +1,18 @@
 <template>
-<div v-if="showChart" class="mask"></div>
+<div v-if="showCart" class="mask" @click="handleCartShowChange"></div>
   <div class="cart">
-    <div v-if="showChart" class="product">
+    <div v-if="showCart" class="product">
       <div class="product__header">
         <div class="product__header__all" @click="() => setCartItemsChecked(shopId)">
           <span
             class="product__header__icon iconfont"
-            v-html="allChecked ? '&#xe652;' : '&#xe66c;'"
+            v-html="allChecked ? '&#xe652;' : '&#xe667;'"
           ></span>
           全选
         </div>
-        <div class="product__header__clear" @click="() => cleanCartProducts(shopId)">清空购物车</div>
+        <div class="product__header__clear">
+          <span class="product__header__clear__btn" @click="() => cleanCartProducts(shopId)">清空购物车</span>
+        </div>
       </div>
       <template
         v-for="item in productList"
@@ -18,7 +20,7 @@
         <div v-if="item.count > 0" class="product__item">
           <div
             class="product__item__checked iconfont"
-            v-html="item.check ? '&#xe652;' : '&#xe66c;'"
+            v-html="item.check ? '&#xe652;' : '&#xe667;'"
             @click="() => changeCartItemChecked(shopId, item._id)"
           />
           <img
@@ -51,7 +53,11 @@
         总计：
         <span class="check__info__price">&yen; {{price}}</span>
       </div>
-      <div class="check__btn">去结算</div>
+      <div class="check__btn">
+        <router-link :to="{name: 'Home'}">
+          去结算
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -135,15 +141,21 @@ const useCartEffect = () => {
 
   return { shopId, total, price, productList, allChecked, setCartItemsChecked, cleanCartProducts, changeCartItemChecked, changeCartItemInfo }
 }
+
+const toggleCartEffect = () => {
+  const showCart = ref(false)
+  const handleCartShowChange = () => {
+    showCart.value = !showCart.value
+  }
+  return { showCart, handleCartShowChange }
+}
+
 export default {
   name: 'Cart',
   setup () {
-    const showChart = ref(false)
     const { shopId, total, price, productList, allChecked, setCartItemsChecked, cleanCartProducts, changeCartItemChecked, changeCartItemInfo } = useCartEffect()
-    const handleCartShowChange = () => {
-      showChart.value = !showChart.value
-    }
-    return { showChart, shopId, total, price, productList, allChecked, setCartItemsChecked, cleanCartProducts, changeCartItemInfo, changeCartItemChecked, handleCartShowChange }
+    const { showCart, handleCartShowChange } = toggleCartEffect()
+    return { showCart, shopId, total, price, productList, allChecked, setCartItemsChecked, cleanCartProducts, changeCartItemInfo, changeCartItemChecked, handleCartShowChange }
   }
 }
 </script>
@@ -151,6 +163,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../style/viriables.scss';
 @import "../../style/mixins.scss";
+
 .mask {
   position: fixed;
   top: 0;
@@ -165,7 +178,7 @@ export default {
   bottom: 0;
   right: 0;
   left: 0;
-  background: #fff;
+  background: $bgColor;
   z-index: 2;
 }
 .check {
@@ -219,14 +232,14 @@ export default {
 .product {
   overflow-y: scroll;
   flex: 1;
-  background: #fff;
+  background: $bgColor;
   &__header {
     display: flex;
     height: .52rem;
     line-height: .52rem;
     border-bottom: 1px #f1f1f1 solid;
     &__icon {
-      color: #0091FF;
+      color: $btn-bgColor;
       font-size: .2rem;
     }
     &__all {
@@ -238,8 +251,15 @@ export default {
       flex: 1;
       text-align: right;
       font-size: .14rem;
-      color: #333;
+      color: $content-fontcolor;
       margin-right: .18rem;
+      &__btn {
+        display: inline-block;
+        a {
+          color: $bgColor;
+          text-decoration: none;
+        }
+      }
     }
   }
   &__item {
@@ -252,7 +272,7 @@ export default {
       font-size: .2rem;
       line-height: .49rem;
       margin-right: .16rem;
-      color: #0091FF;
+      color: $btn-bgColor;
     }
     &__detail {
       overflow: hidden;
