@@ -5,6 +5,11 @@
         v-for="item in productList"
         :key="item._id">
         <div v-if="item.count > 0" class="product__item">
+          <div
+            class="product__item__checked iconfont"
+            v-html="item.check ? '&#xe652;' : '&#xe66c;'"
+            @click="() => changeCartItemChecked(shopId, item._id)"
+          />
           <img
             class="product__item__img"
             :src="item.imgUrl"
@@ -48,8 +53,11 @@ import { useCommonCartEffect } from './commonCartEffect'
 const useCartEffect = () => {
   const store = useStore()
   const route = useRoute()
+
   const shopId = route.params.id
   const cartList = store.state.cartList
+
+  const { changeCartItemInfo } = useCommonCartEffect(shopId)
 
   const total = computed(() => {
     const productList = cartList[shopId]
@@ -80,16 +88,19 @@ const useCartEffect = () => {
     return productList
   })
 
-  return { total, price, productList }
+  const changeCartItemChecked = (shopId, productId) => {
+    store.commit('changeCartItemChecked', {
+      shopId, productId
+    })
+  }
+
+  return { shopId, total, price, productList, changeCartItemChecked, changeCartItemInfo }
 }
 export default {
   name: 'Cart',
   setup () {
-    const route = useRoute()
-    const shopId = route.params.id
-    const { total, price, productList } = useCartEffect()
-    const { cartList, changeCartItemInfo } = useCommonCartEffect(shopId)
-    return { total, price, productList, cartList, changeCartItemInfo }
+    const { shopId, total, price, productList, changeCartItemChecked, changeCartItemInfo } = useCartEffect()
+    return { shopId, total, price, productList, changeCartItemInfo, changeCartItemChecked }
   }
 }
 </script>
@@ -162,6 +173,13 @@ export default {
     padding: 0.12rem 0;
     margin: 0 0.16rem;
     border-bottom: 0.01rem solid $content-bgColor;
+    &__checked {
+      width: .2rem;
+      height: .2rem;
+      line-height: .49rem;
+      margin-right: .16rem;
+      color: #0091FF;
+    }
     &__detail {
       overflow: hidden;
     }
