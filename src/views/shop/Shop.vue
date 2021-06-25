@@ -4,10 +4,13 @@
       <div class="iconfont search__back" @click="handleBackClick">&#xe600;</div>
       <div class="search__content">
         <span class="iconfont search__content__icon">&#xe613;</span>
-        <input class="search__content__input" placeholder="请输入商品名称搜索"/>
+        <input
+          class="search__content__input"
+          placeholder="请输入商品名称搜索"
+        />
       </div>
     </div>
-    <ShopInfo v-show="item.imgUrl" :item="item" :hideBorder="true"/>
+    <ShopInfo v-show="item.imgUrl" :item="item" :hideBorder="true" />
     <Content />
     <Cart />
   </div>
@@ -21,6 +24,7 @@ import ShopInfo from '../../components/ShopInfo'
 import Content from './Content'
 import Cart from './Cart'
 
+// 获取当前商铺信息
 const useShopInfoEffect = () => {
   const route = useRoute()
   const data = reactive({ item: {} })
@@ -34,6 +38,7 @@ const useShopInfoEffect = () => {
   return { item, getItemData }
 }
 
+// 点击回退逻辑
 const useBackRouterEffect = () => {
   const router = useRouter()
   const handleBackClick = () => {
@@ -58,24 +63,24 @@ export default {
 @import '../../style/viriables.scss';
 
 .wrapper {
-  padding: 0 .18rem;
+  padding: 0 0.18rem;
 }
 .search {
   display: flex;
-  padding: .14rem 0 .04rem 0;
-  line-height: .32rem;
+  padding: 0.14rem 0 0.04rem 0;
+  line-height: 0.32rem;
   &__back {
-    width: .3rem;
-    font-size: .2rem;
-    color: #B6B6B6;
+    width: 0.3rem;
+    font-size: 0.2rem;
+    color: #b6b6b6;
   }
   &__content {
     display: flex;
     flex: 1;
     background: $search-bgColor;
-    border-radius: .16rem;
+    border-radius: 0.16rem;
     &__icon {
-      width: .44rem;
+      width: 0.44rem;
       text-align: center;
       color: $search-fontColor;
     }
@@ -85,8 +90,8 @@ export default {
       outline: none;
       background: none;
       width: 100%;
-      height: .32rem;
-      font-size: .14rem;
+      height: 0.32rem;
+      font-size: 0.14rem;
       color: $content-fontcolor;
       &::placeholder {
         color: $content-fontcolor;

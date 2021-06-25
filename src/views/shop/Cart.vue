@@ -21,6 +21,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../style/viriables.scss';
+
 .cart {
   position: absolute;
   bottom: 0;
@@ -31,7 +33,7 @@ export default {
   display: flex;
   position: relative;
   line-height: 0.49rem;
-  box-shadow: 0 -0.01rem 0.01rem 0 #f1f1f1;
+  box-shadow: 0 -0.01rem 0.01rem 0 $content-bgColor;
   &__icon {
     position: relative;
     width: 0.84rem;
@@ -49,25 +51,25 @@ export default {
       height: 0.2rem;
       border-radius: 50%;
       font-size: 0.12rem;
-      color: #fff;
+      color: $bgColor;
       line-height: 0.2rem;
       text-align: center;
-      background: #e93b3b;
+      background: $hightlight-fontColor;
       transform: scale(0.5);
     }
   }
   &__info {
     flex: 1;
     font-size: 0.12rem;
-    color: #333333;
+    color: $content-fontcolor;
     &__price {
       font-size: 0.18rem;
-      color: #e93b3b;
+      color: $hightlight-fontColor;
     }
   }
   &__btn {
     width: 0.98rem;
-    color: #fff;
+    color: $bgColor;
     font-size: 0.14rem;
     text-align: center;
     background: #4fb0f9;
