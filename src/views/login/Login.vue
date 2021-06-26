@@ -120,7 +120,8 @@ export default {
       border: none;
       outline: none;
       width: 100%;
-      line-height: 0.48rem;
+      margin-top: .08rem;
+      line-height: 0.25rem;
       background: none;
       font-size: 0.16rem;
       color: $content-notice-fontcolor;

@@ -43,7 +43,7 @@ export default {
   background-image: linear-gradient(0deg, rgba(0, 145, 255, 0) 4%, $btn-bgColor 50%);
   &__header {
     position: relative;
-    padding-top: 0.26rem;
+    padding-top: 0.18rem;
     color: $bgColor;
     font-size: 0.16rem;
     text-align: center;
