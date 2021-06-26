@@ -26,6 +26,8 @@
      "javascriptreact",
      "typescriptreact"
   ],
+  // 选择 vue 文件中 template 的格式化工具
+  "vetur.format.defaultFormatter.html": "prettier",
   // vetur 的自定义设置
   "vetur.format.defaultFormatterOptions": {
     "prettier": {

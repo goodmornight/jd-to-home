@@ -211,6 +211,10 @@ export default {
     font-size: 0.14rem;
     text-align: center;
     background: #4fb0f9;
+    a {
+      color: $bgColor;
+      text-decoration: none;
+    }
   }
 }
 .product {
