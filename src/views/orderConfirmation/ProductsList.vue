@@ -3,24 +3,22 @@
     <div class="products__title">{{ shopName }}</div>
     <div class="products__wrapper">
       <div class="products__list">
-        <template v-for="item in productList" :key="item._id">
-          <div v-if="item.count > 0" class="products__item">
-            <img class="products__item__img" :src="item.imgUrl" />
-            <div class="products__item__detail">
-              <h4 class="products__item__title">{{ item.name }}</h4>
-              <p class="products__item__price">
-                <span>
-                  <span class="products__item__yen">&yen;</span>
-                  {{ item.price }} x {{ item.count }}
-                </span>
-                <span class="products__item__total">
-                  <span class="products__item__yen">&yen; </span>
-                  {{ (item.price * item.count).toFixed(2) }}
-                </span>
-              </p>
-            </div>
+        <div v-for="item in productList" :key="item._id" class="products__item">
+          <img class="products__item__img" :src="item.imgUrl" />
+          <div class="products__item__detail">
+            <h4 class="products__item__title">{{ item.name }}</h4>
+            <p class="products__item__price">
+              <span>
+                <span class="products__item__yen">&yen;</span>
+                {{ item.price }} x {{ item.count }}
+              </span>
+              <span class="products__item__total">
+                <span class="products__item__yen">&yen; </span>
+                {{ (item.price * item.count).toFixed(2) }}
+              </span>
+            </p>
           </div>
-        </template>
+        </div>
       </div>
     </div>
   </div>
@@ -58,11 +56,10 @@ export default {
     top: 2.5rem;
     left: 0;
     right: 0;
-    bottom: .6rem;
-    margin: 0 .18rem;
+    bottom: 0.6rem;
+    margin: 0 0.18rem;
   }
   &__list {
-
     background: $bgColor;
   }
   &__item {

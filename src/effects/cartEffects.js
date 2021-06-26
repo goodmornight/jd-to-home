@@ -19,7 +19,14 @@ export const useCommonCartEffect = (shopId) => {
   // 加入购物车列表
   const productList = computed(() => {
     const productList = cartList[shopId]?.productList || []
-    return productList
+    const notEmptyProductList = {}
+    for (const i in productList) {
+      const product = productList[i]
+      if (product.count > 0) {
+        notEmptyProductList[i] = product
+      }
+    }
+    return notEmptyProductList
   })
   // 计算总数
   const calculations = computed(() => {
